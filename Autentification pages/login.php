@@ -65,7 +65,7 @@
                     <div>
                         <button 
                             type="submit" 
-                            class="w-full bg-[var(--primary)] text-white py-3 rounded-lg hover:bg-opacity-90 transition duration-300 shadow-md"
+                            class="w-full bg-[var(--primary)] text-white py-3 rounded-lg hover:bg-gray-900 transition duration-300 shadow-md"
                         >
                             Se Connecter
                         </button>
