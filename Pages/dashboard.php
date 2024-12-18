@@ -2,7 +2,6 @@
 if(isset($_GET['chefname'])){
     $chefname = $_GET['chefname'];
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -25,7 +24,7 @@ if(isset($_GET['chefname'])){
                 
                 <!-- after enter  -->
                 <div class="">
-                <a href="<?php echo "../profiles/profile_admin.php?chefname=". $chefname  ."" ?>"  ><img width="30px" class="rounded-full" src="../img/onsiteheadshot.jpg" alt="profilephoto" title="See Profile"></a>
+                <a href="/Gestion-d-un-un-Chef-Cuisinier/profiles/profile_admin.php?chefname=<?php echo $chefname ?>"><img width="30px" class="rounded-full" src="../img/onsiteheadshot.jpg" alt="profilephoto" title="See Profile"></a>
                 </div>
             </div>
         </div>
