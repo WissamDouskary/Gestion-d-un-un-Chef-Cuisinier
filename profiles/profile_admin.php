@@ -1,9 +1,16 @@
+<?php 
+if(isset($_GET['chefname'])){
+    $chefname = $_GET['chefname'];
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tableau de Bord du Chef</title>
+    <title>My Profile - Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
@@ -15,9 +22,7 @@
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             <a href="Gestion-d-un-un-Chef-Cuisinier/index.php"><img width="80px" src="../img/logo.png" alt="LOGO"></a>
             <div class="space-x-8 flex">
-                <a href="../index.php" class="text-gray-700 hover:text-gray-900 transition">Home</a>
-                <a href="../Pages/menu.php" class="text-gray-700 hover:text-gray-900 transition">Menu</a>
-                <a href="../Pages/dashboard.php" class="text-gray-700 hover:text-gray-900 transition">dashboard</a>
+                <a href=<?php echo'../Pages/dashboard.php?chefname='. $chefname .'' ?> class="text-gray-700 hover:text-gray-900 transition mt-1">dashboard</a>
                 <!-- sign up - log in  -->
                 <div class="relative left-7 hidden">
                 <a href="Autentification pages/login.php" class="bg-gray-900 text-white pr-12 px-4 py-2 rounded-full hover:bg-gray-700 transition">Sign up</a>
@@ -25,7 +30,7 @@
                 </div>
                 <!-- after enter  -->
                 <div class="">
-                <a href=""><img width="25px" src="../img/profile-major.svg" alt=""></a>
+                <a href=""><img width="30px" class="rounded-full" src="../img/onsiteheadshot.jpg" alt=""></a>
                 </div>
             </div>
         </div>
@@ -46,6 +51,17 @@
                         </svg>
                         Edit Profile
                     </button>
+                    
+                    <button class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">
+                        Disconnect
+                    <?php
+                     session_start();
+                     session_destroy();
+
+                    header('Location: index.html');
+                    ?>
+                    </button>
+                    </a>
                 </div>
             </div>
 
@@ -62,7 +78,7 @@
                
                 <div class="text-center pt-24">
                     <h1 class="text-3xl font-bold text-gray-800">
-                        Chef Mouha
+                        <?php echo "Chef ". $chefname ."" ?>
                     </h1>
                     <p class="text-gray-600 mt-2">Star Chef | Gourmet Cuisine</p>
                     <div class="mt-2 text-gray-500">

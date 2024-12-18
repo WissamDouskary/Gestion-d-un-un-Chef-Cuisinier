@@ -1,11 +1,58 @@
+<?php 
+session_start();
+include '../connection/conn.php';
+
+if($_SERVER['REQUEST_METHOD'] == 'POST'){
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+
+    $sql = "SELECT * FROM Clients WHERE email = ?";
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "s", $email);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    $clients = mysqli_fetch_assoc($result);
+
+
+    if($clients && password_verify($password, $clients['mot_de_passe'])){
+        
+        $_SESSION['client_id'] = $clients['client_id'];
+        $_SESSION['last-name'] = $clients['nom'];
+        $_SESSION['first-name'] = $clients['prenom'];
+        $_SESSION['email'] = $clients['email'];
+        $_SESSION['role'] = $clients['role_id'];
+        
+        $role_id = $clients['role_id'];
+        $rolesql = "SELECT titre FROM role WHERE role_id = ?";
+        $stmt_role = mysqli_prepare($conn, $rolesql);
+        mysqli_stmt_bind_param($stmt_role, "i", $role_id);
+        mysqli_stmt_execute($stmt_role);
+        $resultrole = mysqli_stmt_get_result($stmt_role);
+        $role = mysqli_fetch_assoc($resultrole);
+
+        if ($role && $role['titre'] == 'admin') {
+            header('Location: ../Pages/dashboard.php?chefname=' . $clients['prenom']);
+            exit();
+        } else {
+            header('Location: ../index_client_Aau.php');
+            exit();
+        }
+    } else {
+        echo "<script>alert('Email ou mot de passe incorrect.')</script>";
+    }
+}
+?>
+
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion - Chef Dashboard</title>
+    <title>Log In</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
     <style>
         :root {
             --primary: #3A506B;
@@ -25,7 +72,7 @@
                     <p class="text-gray-600">Enter To Your World!</p>
                 </div>
                 
-                <form class="space-y-6">
+                <form class="space-y-6" method="POST">
                     <div>
                         <label for="email" class="block text-sm font-medium text-[var(--text-dark)] mb-2">
                             E-mail
@@ -83,5 +130,8 @@
             </div>
         </div>
     </div>
+
+
+
 </body>
 </html>

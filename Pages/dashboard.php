@@ -1,9 +1,16 @@
+<?php 
+if(isset($_GET['chefname'])){
+    $chefname = $_GET['chefname'];
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tableau de Bord du Chef</title>
+    <title>DashBoard - admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -12,19 +19,13 @@
 
     <nav class="fixed w-full z-50 bg-white/80 backdrop-blur-md shadow-sm">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <a href="Gestion-d-un-un-Chef-Cuisinier/index.php"><img width="80px" src="../img/logo.png" alt="LOGO"></a>
+            <a href=""><img width="80px" src="../img/logo.png" alt="LOGO"></a>
             <div class="space-x-8 flex">
-                <a href="../index.php" class="text-gray-700 hover:text-gray-900 transition">Home</a>
-                <a href="../Pages/menu.php" class="text-gray-700 hover:text-gray-900 transition">Menu</a>
-                <a href="../Pages/dashboard.php" class="text-gray-700 hover:text-gray-900 transition">dashboard</a>
-                <!-- sign up - log in  -->
-                <div class="relative left-7 hidden">
-                <a href="Autentification pages/login.php" class="bg-gray-900 text-white pr-12 px-4 py-2 rounded-full hover:bg-gray-700 transition">Sign up</a>
-                <a href="Autentification pages/login.php" class="bg-gray-400 text-white px-4 py-2 rounded-full hover:bg-gray-500 transition relative right-12">Log in</a>
-                </div>
+                <a href="../Pages/dashboard.php" class="text-gray-700 hover:text-gray-900 transition mt-1">dashboard</a>
+                
                 <!-- after enter  -->
                 <div class="">
-                <a href=""><img width="25px" src="../img/profile-major.svg" alt=""></a>
+                <a href="<?php echo "../profiles/profile_admin.php?chefname=". $chefname  ."" ?>"  ><img width="30px" class="rounded-full" src="../img/onsiteheadshot.jpg" alt="profilephoto" title="See Profile"></a>
                 </div>
             </div>
         </div>
@@ -34,7 +35,7 @@
         <header class="flex justify-between items-center mb-10 bg-white rounded-xl shadow-soft p-6">
             <div>
                 <h1 class="text-3xl font-bold text-gray-800">Dashboard</h1>
-                <p class="text-gray-500">Welcome, Chef Mo7a</p>
+                <p class="text-gray-500"><?php echo "Welcome, Chef ". $chefname  .""  ?></p>
             </div>
             <div class="flex items-center space-x-4">
             </div>

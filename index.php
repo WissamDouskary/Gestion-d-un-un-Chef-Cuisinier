@@ -12,23 +12,17 @@
             background-size: cover;
             background-position: center;
         }
-        
-        
+
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
-
-    <div id="loading" class="loading-spinner">
-        <div class="spinner"></div>
-    </div>
-    
+    <!-- Navigation -->
     <nav class="fixed w-full z-50 bg-white/80 backdrop-blur-md shadow-sm">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <a href="../Gestion-d-un-un-Chef-Cuisinier/index.php"><img width="80px" src="img/logo.png" alt="LOGO"></a>
+            <a href="../Gestion-d-un-un-Chef-Cuisinier/index_client.php"><img width="80px" src="img/logo.png" alt="LOGO"></a>
             <div class="space-x-8 flex">
                 <a href="../Gestion-d-un-un-Chef-Cuisinier/index.php" class="text-gray-700 hover:text-gray-900 transition">Home</a>
                 <a href="../Gestion-d-un-un-Chef-Cuisinier/Pages/menu.php" class="text-gray-700 hover:text-gray-900 transition">Menu</a>
-                <a href="../Gestion-d-un-un-Chef-Cuisinier/Pages/dashboard.php" class="text-gray-700 hover:text-gray-900 transition">dashboard</a>
                 <!-- sign up - log in  -->
                 <div class="relative left-7 ">
                 <a href="../Gestion-d-un-un-Chef-Cuisinier/Autentification pages/signup.php" class="bg-gray-900 text-white pr-12 px-4 py-2 rounded-full hover:bg-gray-700 transition">Sign up</a>
@@ -44,21 +38,21 @@
 
     <!-- burger ico  -->
 
-    <!-- First Section -->
+    <!-- Hero Section -->
     <header class="hero-bg text-white h-screen flex items-center justify-center text-center">
         <div class="container mx-auto px-4">
             <h1 class="text-5xl font-bold mb-6 animate-fade-in">Unique Experience</h1>
             <p class="text-xl mb-10 max-w-2xl mx-auto">Discover a personalized gastronomic adventure, prepared with passion and creativity by a starred chef.</p>
             <div class="space-x-4">
-                <a href="../Gestion-d-un-un-Chef-Cuisinier/Pages/menu.php" class="bg-white text-gray-900 px-6 py-3 rounded-full hover:bg-gray-100 transition">Our Menus</a>
-                <a href="#contact" class="border-2 border-white text-white px-6 py-3 rounded-full hover:bg-white hover:text-gray-900 transition duration-300">Contact us</a>
+                <a href="#" class="bg-white text-gray-900 px-6 py-3 rounded-full hover:bg-gray-100 transition">Our Menus</a>
+                <a href="#contact" class="border-2 border-white text-white px-6 py-3 rounded-full hover:bg-white hover:text-gray-900 transition">Contact us</a>
             </div>
         </div>
     </header>
 
     <!-- About Section -->
     <section id="about" class="container mx-auto px-4 py-20 flex">
-        <div class="grid md:grid-cols-2 gap-52 items-center ml-16">
+        <div class="grid md:grid-cols-2 gap-64 items-center ml-16">
             <div>
                 <h2 class="text-4xl font-bold mb-6 text-gray-900">Our History</h2>
                 <p class="text-gray-600 mb-4">
@@ -79,7 +73,7 @@
                 </div>
             </div>
             <div class="relative">
-                <img width="600px" src="img/lovepik-chefs-chef-picture_501000290-transformed.jpeg" alt="Chef Portrait" class="">
+                <img src="img/lovepik-chefs-chef-picture_501000290-transformed.jpeg" alt="Chef Portrait" class="">
             </div>
         </div>
     </section>
