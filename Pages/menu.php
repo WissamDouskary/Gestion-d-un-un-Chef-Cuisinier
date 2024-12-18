@@ -26,7 +26,6 @@
             <div class="space-x-8 flex">
                 <a href="../index.php" class="text-gray-700 hover:text-gray-900 transition">Home</a>
                 <a href="../Pages/menu.php" class="text-gray-700 hover:text-gray-900 transition">Menu</a>
-                <a href="../Pages/dashboard.php" class="text-gray-700 hover:text-gray-900 transition">dashboard</a>
                 <!-- sign up - log in  -->
                 <div class="relative left-7 ">
                 <a href="../Autentification pages/signup.php" class="bg-gray-900 text-white pr-12 px-4 py-2 rounded-full hover:bg-gray-700 transition">Sign up</a>

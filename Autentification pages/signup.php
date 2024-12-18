@@ -1,11 +1,50 @@
+<?php
+
+include '../connection/conn.php';
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $firstName = $_POST['first-name'];
+    $lastName = $_POST['last-name'];
+    $email = $_POST['email'];
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT); 
+    $role = $_POST['select_role'];
+
+    
+    $rolesql = "INSERT INTO role(titre) VALUES (?)";
+    $rolestmt = mysqli_prepare($conn, $rolesql);
+    mysqli_stmt_bind_param($rolestmt, "s", $role);
+    mysqli_stmt_execute($rolestmt);
+
+    
+    $role_id = mysqli_insert_id($conn);
+
+   
+    $sql = "INSERT INTO clients(prenom, nom, email, mot_de_passe, role_id) VALUES (?, ?, ?, ?, ?)";
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "sssss", $firstName, $lastName, $email, $password, $role_id);
+    mysqli_stmt_execute($stmt);
+
+    
+    if ($role == 'admin') {
+        header('Location: ../Pages/dashboard.php?chefname=' . $firstName);
+    } else {
+        header('Location: ../index_client_Aau.php');
+    }
+    exit();
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inscription - Chef Dashboard</title>
+    <title>Sign Up</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
     <style>
         :root {
             --primary: #3A506B;
@@ -25,7 +64,7 @@
                     <p class="text-gray-600">Create Your Account !</p>
                 </div>
                 
-                <form class="space-y-6">
+                <form class="space-y-6" method="post">
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <label for="first-name" class="block text-sm font-medium text-[var(--text-dark)] mb-2">
@@ -86,8 +125,23 @@
                         </p>
                     </div>
                     <div>
+                        <label for="password" class="block text-sm font-medium text-[var(--text-dark)] mb-2">
+                            Role
+                        </label>
+                        <select 
+                        name="select_role"
+                        id="select_role"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--secondary)] transition duration-300"
+                         required>
+                            <option value="admin" selected disabled>Select A Role</option>
+                            <option value="admin">Admin</option>
+                            <option value="Client">Client</option>
+                        </select>
+                    </div>
+                    <div>
                         <button 
                             type="submit" 
+                            name="creatAcc"
                             class="w-full bg-[var(--primary)] text-white py-3 rounded-lg hover:bg-gray-900 transition duration-300 shadow-md"
                         >
                             Create Account

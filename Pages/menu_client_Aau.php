@@ -24,16 +24,12 @@
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
         <a href="../index_client.php"><img width="80px" src="../img/logo.png" alt="LOGO"></a>
             <div class="space-x-8 flex">
-                <a href="../index_client.php" class="text-gray-700 hover:text-gray-900 transition">Home</a>
-                <a href="../Pages/menu_client.php" class="text-gray-700 hover:text-gray-900 transition">Menu</a>
-                <!-- sign up - log in  -->
-                <div class="relative left-7 ">
-                <a href="../Autentification pages/signup.php" class="bg-gray-900 text-white pr-12 px-4 py-2 rounded-full hover:bg-gray-700 transition">Sign up</a>
-                <a href="../Autentification pages/login.php" class="bg-gray-400 text-white px-4 py-2 rounded-full hover:bg-gray-500 transition relative right-12">Log in</a>
-                </div>
+                <a href="../index_client_Aau.php" class="text-gray-700 hover:text-gray-900 transition">Home</a>
+                <a href="../Pages/menu_client_Aau.php" class="text-gray-700 hover:text-gray-900 transition">Menu</a>
+                
                 <!-- after enter  -->
-                <div class="hidden">
-                <a href=""><img width="25px" src="img/profile-major.svg" alt=""></a>
+                <div class="">
+                <a href="../profiles/profile_user.php"><img width="25px" src="img/profile-major.svg" alt=""></a>
                 </div>
             </div>
         </div>
