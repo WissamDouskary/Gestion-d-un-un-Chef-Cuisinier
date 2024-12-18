@@ -44,7 +44,7 @@ if(isset($_GET['chefname'])){
             
             <div class="bg-gray-100 p-4 flex justify-between items-center">
                 <h2 class="text-xl font-semibold text-gray-800">My Profile</h2>
-                <div class="space-x-3">
+                <div class="space-x-3 flex">
                     <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -52,15 +52,11 @@ if(isset($_GET['chefname'])){
                         Edit Profile
                     </button>
                     
-                    <button class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">
-                        Disconnect
-                    <?php
-                     session_start();
-                     session_destroy();
-
-                    header('Location: index.html');
-                    ?>
-                    </button>
+                    <form action="../Pages/disconnect.php" method="POST">
+                            <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">
+                                Disconnect
+                            </button>
+                    </form>
                     </a>
                 </div>
             </div>
