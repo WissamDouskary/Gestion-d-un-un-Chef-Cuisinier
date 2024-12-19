@@ -29,7 +29,7 @@
                 
                 <!-- after enter  -->
                 <div class="">
-                <a href="../profiles/profile_user.php"><img width="25px" src="img/profile-major.svg" alt=""></a>
+                <a href="../profiles/profile_user.php"><img width="25px" src="../img/profile-major.svg" alt=""></a>
                 </div>
             </div>
         </div>
