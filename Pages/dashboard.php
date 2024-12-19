@@ -1,4 +1,5 @@
 <?php 
+session_start();
 if(isset($_GET['chefname'])){
     $chefname = $_GET['chefname'];
 }
@@ -24,7 +25,7 @@ if(isset($_GET['chefname'])){
                 
                 <!-- after enter  -->
                 <div class="">
-                <a href="/Gestion-d-un-un-Chef-Cuisinier/profiles/profile_admin.php?chefname=<?php echo $chefname ?>"><img width="30px" class="rounded-full" src="../img/onsiteheadshot.jpg" alt="profilephoto" title="See Profile"></a>
+                <a href="/Gestion-d-un-un-Chef-Cuisinier/profiles/profile_admin.php"><img width="30px" class="rounded-full" src="../img/onsiteheadshot.jpg" alt="profilephoto" title="See Profile"></a>
                 </div>
             </div>
         </div>
@@ -34,7 +35,9 @@ if(isset($_GET['chefname'])){
         <header class="flex justify-between items-center mb-10 bg-white rounded-xl shadow-soft p-6">
             <div>
                 <h1 class="text-3xl font-bold text-gray-800">Dashboard</h1>
-                <p class="text-gray-500"><?php echo "Welcome, Chef ". $chefname  .""  ?></p>
+                <?php if(isset($_SESSION['first_name'], $_SESSION['last_name'])){ ?>
+                <p class="text-gray-500"><?php echo "Welcome, Chef ". $_SESSION['first_name'] ." ".  $_SESSION['last_name'] . ""  ?></p>
+                <?php } ?>
             </div>
             <div class="flex items-center space-x-4">
             </div>

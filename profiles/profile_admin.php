@@ -1,4 +1,5 @@
 <?php 
+session_start();
 if(isset($_GET['chefname'])){
     $chefname = $_GET['chefname'];
 }
@@ -22,7 +23,7 @@ if(isset($_GET['chefname'])){
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             <a href="Gestion-d-un-un-Chef-Cuisinier/index.php"><img width="80px" src="../img/logo.png" alt="LOGO"></a>
             <div class="space-x-8 flex">
-                <a href=<?php echo'../Pages/dashboard.php?chefname='. $chefname .'' ?> class="text-gray-700 hover:text-gray-900 transition mt-1">dashboard</a>
+                <a href='../Pages/dashboard.php' class="text-gray-700 hover:text-gray-900 transition mt-1">dashboard</a>
                 <!-- sign up - log in  -->
                 <div class="relative left-7 hidden">
                 <a href="Autentification pages/login.php" class="bg-gray-900 text-white pr-12 px-4 py-2 rounded-full hover:bg-gray-700 transition">Sign up</a>
@@ -68,14 +69,16 @@ if(isset($_GET['chefname'])){
 
            
             <div class="px-6 py-4 relative">
-               
+                
                 <img width="150px" src="../img/onsiteheadshot.jpg" alt="Chef Profil" class="absolute bottom-36  left-1/2 transform -translate-x-1/2 rounded-full border-4 border-white shadow-lg">
                 
-               
+
                 <div class="text-center pt-24">
+                <?php if(isset($_SESSION['first_name'], $_SESSION['last_name'])) { ?>
                     <h1 class="text-3xl font-bold text-gray-800">
-                        <?php echo "Chef ". $chefname ."" ?>
+                        <?php echo"Chef ". $_SESSION['first_name'] . " " . $_SESSION['last_name'] ."" ?>
                     </h1>
+                <?php } ?>
                     <p class="text-gray-600 mt-2">Star Chef | Gourmet Cuisine</p>
                     <div class="mt-2 text-gray-500">
                         <span>Paris, France</span>

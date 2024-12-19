@@ -18,8 +18,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     if($clients && password_verify($password, $clients['mot_de_passe'])){
         
         $_SESSION['client_id'] = $clients['client_id'];
-        $_SESSION['last-name'] = $clients['nom'];
-        $_SESSION['first-name'] = $clients['prenom'];
+        $_SESSION['last_name'] = $clients['nom'];
+        $_SESSION['first_name'] = $clients['prenom'];
         $_SESSION['email'] = $clients['email'];
         $_SESSION['role'] = $clients['role_id'];
         

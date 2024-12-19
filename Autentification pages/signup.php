@@ -1,15 +1,21 @@
 <?php
-
+session_start();
 include '../connection/conn.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $firstName = $_POST['first-name'];
     $lastName = $_POST['last-name'];
     $email = $_POST['email'];
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT); 
-    $role = $_POST['select_role'];
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
     
+    if ($email == 'admin@gmail.com' && $_POST['password'] == 'admin') {
+        $role = 'admin';
+    } else {
+        $role = 'Client';
+    }
+
+   
     $rolesql = "INSERT INTO role(titre) VALUES (?)";
     $rolestmt = mysqli_prepare($conn, $rolesql);
     mysqli_stmt_bind_param($rolestmt, "s", $role);
@@ -25,14 +31,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     mysqli_stmt_execute($stmt);
 
     
+    $_SESSION['user_id'] = mysqli_insert_id($conn);
+    $_SESSION['first_name'] = $firstName;
+    $_SESSION['last_name'] = $lastName;
+    $_SESSION['role'] = $role;
+
+    
     if ($role == 'admin') {
-        header('Location: ../Pages/dashboard.php?chefname=' . $firstName);
+        header('Location: ../Pages/dashboard.php');
     } else {
         header('Location: ../index_client_Aau.php');
     }
     exit();
 }
-
 ?>
 
 
@@ -55,6 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     </style>
 </head>
+
 <body class="bg-[var(--background)] min-h-screen flex items-center justify-center font-manrope text-[var(--text-dark)] antialiased">
     <div class="w-full max-w-md">
         <div class="bg-white shadow-2xl rounded-2xl overflow-hidden">
@@ -124,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             Password must be more than 8 caracters!
                         </p>
                     </div>
-                    <div>
+                    <!-- <div>
                         <label for="password" class="block text-sm font-medium text-[var(--text-dark)] mb-2">
                             Role
                         </label>
@@ -137,7 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <option value="admin">Admin</option>
                             <option value="Client">Client</option>
                         </select>
-                    </div>
+                    </div> -->
                     <div>
                         <button 
                             type="submit" 
