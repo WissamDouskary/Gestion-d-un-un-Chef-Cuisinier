@@ -1,8 +1,6 @@
-<?php 
+<?php
 session_start();
-if(isset($_GET['chefname'])){
-    $chefname = $_GET['chefname'];
-}
+if (isset($_SESSION['role']) && $_SESSION['role'] == '44') {
 
 ?>
 
@@ -107,5 +105,10 @@ if(isset($_GET['chefname'])){
             </div>
         </div>
     </div>
+<?php } else {
+    header('Location: ../index.php');
+    exit();
+}
+?>
 </body>
 </html>
