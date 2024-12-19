@@ -139,7 +139,7 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == '44') {
 
 
 <!-- Add Menu Modal -->
-<div id="addMenuModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+<div id="addMenuModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 overflow-auto">
     <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-2xl font-bold text-gray-800">Add New Menu</h2>
@@ -152,23 +152,45 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == '44') {
         <form id="menuForm" method="POST" class="space-y-4">
             <div>
                 <label class="block text-gray-700 text-sm font-medium mb-2">Menu Name</label>
-                <input type="text" name="name" required 
+                <input type="text" name="menu_name" required 
                     class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
             </div>
             <div>
                 <label class="block text-gray-700 text-sm font-medium mb-2">Description</label>
-                <textarea name="description" required 
+                <textarea name="menu_description" required 
                     class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
             </div>
             <div>
                 <label class="block text-gray-700 text-sm font-medium mb-2">Image URL</label>
-                <input type="text" name="Image" required 
+                <input type="text" name="menu_Image" required 
                     class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
             </div>
             <div>
                 <label class="block text-gray-700 text-sm font-medium mb-2">Price</label>
-                <input type="number" name="price" step="0.01" required 
+                <input type="number" name="menu_price" step="0.01" required 
                     class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div>
+                <label class="block text-gray-700 text-sm font-medium mb-2">Select Plates (Max 3)</label>
+                <div class="space-y-2">
+                    <?php
+       
+                    include '../connection/conn.php';
+                    $sql = "SELECT * FROM plats";
+                    $result = mysqli_query($conn, $sql);
+        
+                    if (mysqli_num_rows($result) > 0) {
+                        while ($row = mysqli_fetch_assoc($result)) {
+                        echo '<label class="inline-flex items-center">';
+                        echo '<input type="checkbox" name="plates[]" value="' . $row['plate_id'] . '" class="form-checkbox">';
+                        echo '<span class="ml-2">' . $row['title'] . '</span>';
+                        echo '</label>';
+                        }
+                    } else {
+                        echo "<p>No plats available.</p>";
+                    }
+                    ?>
+                </div>
             </div>
             <div>
                 <label class="block text-gray-700 text-sm font-medium mb-2">Number of Plates</label>
@@ -181,7 +203,7 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == '44') {
                     class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
             </div>
             <div class="flex space-x-4 pt-4">
-                <button type="submit" class="flex-1 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors duration-200">
+                <button type="submit" name="Menu_submit" class="flex-1 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors duration-200">
                     Submit
                 </button>
                 <button type="button" onclick="closeAddMenuModal()" 
@@ -204,7 +226,7 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == '44') {
                 </svg>
             </button>
         </div>
-        <form id="plateForm" method="POST" class="space-y-4">
+        <form id="plateForm" method="POST" action="" class="space-y-4">
             <div>
                 <label class="block text-gray-700 text-sm font-medium mb-2">Plate Name</label>
                 <input type="text" name="plate_name" required 
@@ -214,17 +236,6 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == '44') {
                 <label class="block text-gray-700 text-sm font-medium mb-2">Description</label>
                 <textarea name="plate_description" required 
                     class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
-            </div>
-            <div>
-                <label class="block text-gray-700 text-sm font-medium mb-2">Category</label>
-                <select name="category" required 
-                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                    <option value="">Select a category</option>
-                    <option value="appetizer">Appetizer</option>
-                    <option value="main">Main Course</option>
-                    <option value="dessert">Dessert</option>
-                    <option value="beverage">Beverage</option>
-                </select>
             </div>
             <div>
                 <label class="block text-gray-700 text-sm font-medium mb-2">Price</label>
@@ -237,7 +248,7 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == '44') {
                     class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
             </div>
             <div class="flex space-x-4 pt-4">
-                <button type="submit" class="flex-1 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors duration-200">
+                <button type="submit" name="plate_submit" class="flex-1 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors duration-200">
                     Submit
                 </button>
                 <button type="button" onclick="closeAddPlateModal()" 
@@ -287,14 +298,75 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == '44') {
 <?php 
 include '../connection/conn.php';
 
-if($_SERVER['REQUEST_METHOD'] == 'POST'){
-    $name = $_POST['name'];
-    $description = $_POST['description'];
-    $Image = $_POST['Image'];
-    $price = $_POST['price'];
+if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['plate_submit'])){
+    $name = $_POST['plate_name'];
+    $description = $_POST['plate_description'];
+    $Image = $_POST['plate_image'];
+    $price = $_POST['plate_price'];
+
+    if (empty($name) || empty($description) || empty($Image) || $price <= 0) {
+        echo "<script>alert('Invalid input.');</script>";
+        return;
+    }
+
+    $sql = "INSERT INTO plats (title, description, plats_image, price)
+            VALUES (?, ?, ?, ?)";
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "sssd" , $name, $description, $Image, $price);
+    if(mysqli_stmt_execute($stmt)){
+        echo "<script>
+        alert('plate created successfully!');
+        window.location.href = '../Pages/dashboard.php';
+        </script>";
+    }
+        
 }
 
 ?>
+
+<?php
+include '../connection/conn.php';
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['Menu_submit'])) {
+    
+    $menuName = trim($_POST['menu_name']);
+    $menuDescription = trim($_POST['menu_description']);
+    $menuImage = trim($_POST['menu_Image']);
+    $menuPrice = floatval($_POST['menu_price']);
+    $dateAdded = $_POST['date_added'];
+    $selectedPlates = $_POST['plates'] ?? [];
+
+    
+    if (empty($menuName) || empty($menuDescription) || empty($menuImage) || $menuPrice <= 0 || count($selectedPlates) !== 3) {
+        echo "<script>alert('Invalid input.');</script>";
+        return;
+    }
+
+   
+    $sql = "INSERT INTO Menus (name, description, menu_image_url, price, date_added) VALUES (?, ?, ?, ?, ?)";
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "sssds", $menuName, $menuDescription, $menuImage, $menuPrice, $dateAdded);
+    mysqli_stmt_execute($stmt);
+
+    $menuId = mysqli_insert_id($conn);
+
+    
+    $insertPlatesSql = "INSERT INTO menu_plats (menu_id, plate_id) VALUES (?, ?)";
+    $plateStmt = mysqli_prepare($conn, $insertPlatesSql);
+    foreach ($selectedPlates as $plateId) {
+        mysqli_stmt_bind_param($plateStmt, "ii", $menuId, $plateId);
+        mysqli_stmt_execute($plateStmt);
+    }
+
+    
+    echo "<script>
+        alert('Menu created successfully!');
+        window.location.href = '../Pages/dashboard.php';
+    </script>";
+}
+?>
+
+
 <?php } else {
     header('Location: ../index.php');
     exit();
