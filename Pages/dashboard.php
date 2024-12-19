@@ -1,18 +1,15 @@
-<?php 
+<?php
 session_start();
-if(isset($_GET['chefname'])){
-    $chefname = $_GET['chefname'];
-}
-?>
+if (isset($_SESSION['role']) && $_SESSION['role'] == '44') {
 
+?>
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DashBoard - admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen font-inter text-gray-800">
@@ -69,22 +66,14 @@ if(isset($_GET['chefname'])){
 
             
             <div class="bg-white rounded-xl shadow-soft p-6">
-                <h2 class="text-xl font-semibold text-gray-700 mb-4">Next Reservation</h2>
-                <div class="bg-gradient-to-r from-blue-50 to-blue-100 p-4 rounded-lg">
-                    <div class="flex items-center space-x-4">
-                        <div class="w-14 h-14 bg-blue-200 rounded-full flex items-center justify-center">
-                            <svg class="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <p class="font-semibold text-gray-800">Sophie Dupont</p>
-                            <p class="text-sm text-gray-600">Tomorrow, 19:00 - 4 persone</p>
-                            <div class="mt-2 flex space-x-2">
-                                <span class="bg-green-100 text-green-600 px-2 py-1 rounded-full text-xs">Confirm</span>
-                            </div>
-                        </div>
-                    </div>
+                <h2 class="text-xl font-semibold text-gray-700 mb-4">Remote</h2>
+                <div class="flex flex-col gap-4 items-start">
+                    <button class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600" onclick="openAddPlateModal()">
+                        ADD PLATS
+                    </button>
+                    <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600" onclick="openAddMenuModal()">
+                        ADD MENU
+                    </button>
                 </div>
             </div>
 
@@ -145,5 +134,172 @@ if(isset($_GET['chefname'])){
             </div>
         </div>
     </div>
+
+
+
+
+<!-- Add Menu Modal -->
+<div id="addMenuModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+    <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-800">Add New Menu</h2>
+            <button onclick="closeAddMenuModal()" class="text-gray-500 hover:text-gray-700">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        <form id="menuForm" method="POST" class="space-y-4">
+            <div>
+                <label class="block text-gray-700 text-sm font-medium mb-2">Menu Name</label>
+                <input type="text" name="name" required 
+                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div>
+                <label class="block text-gray-700 text-sm font-medium mb-2">Description</label>
+                <textarea name="description" required 
+                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+            </div>
+            <div>
+                <label class="block text-gray-700 text-sm font-medium mb-2">Image URL</label>
+                <input type="text" name="Image" required 
+                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div>
+                <label class="block text-gray-700 text-sm font-medium mb-2">Price</label>
+                <input type="number" name="price" step="0.01" required 
+                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div>
+                <label class="block text-gray-700 text-sm font-medium mb-2">Number of Plates</label>
+                <input type="number" name="Nombre_du_plates" required 
+                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div>
+                <label class="block text-gray-700 text-sm font-medium mb-2">Date Added</label>
+                <input type="date" name="date_added" required 
+                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div class="flex space-x-4 pt-4">
+                <button type="submit" class="flex-1 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors duration-200">
+                    Submit
+                </button>
+                <button type="button" onclick="closeAddMenuModal()" 
+                    class="flex-1 bg-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-400 transition-colors duration-200">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Add Plate Modal -->
+<div id="addPlateModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+    <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-800">Add New Plate</h2>
+            <button onclick="closeAddPlateModal()" class="text-gray-500 hover:text-gray-700">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        <form id="plateForm" method="POST" class="space-y-4">
+            <div>
+                <label class="block text-gray-700 text-sm font-medium mb-2">Plate Name</label>
+                <input type="text" name="plate_name" required 
+                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div>
+                <label class="block text-gray-700 text-sm font-medium mb-2">Description</label>
+                <textarea name="plate_description" required 
+                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+            </div>
+            <div>
+                <label class="block text-gray-700 text-sm font-medium mb-2">Category</label>
+                <select name="category" required 
+                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    <option value="">Select a category</option>
+                    <option value="appetizer">Appetizer</option>
+                    <option value="main">Main Course</option>
+                    <option value="dessert">Dessert</option>
+                    <option value="beverage">Beverage</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-gray-700 text-sm font-medium mb-2">Price</label>
+                <input type="number" name="plate_price" step="0.01" required 
+                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div>
+                <label class="block text-gray-700 text-sm font-medium mb-2">Image URL</label>
+                <input type="text" name="plate_image" required 
+                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div class="flex space-x-4 pt-4">
+                <button type="submit" class="flex-1 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors duration-200">
+                    Submit
+                </button>
+                <button type="button" onclick="closeAddPlateModal()" 
+                    class="flex-1 bg-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-400 transition-colors duration-200">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script>
+    
+    function openAddMenuModal() {
+        document.getElementById('addMenuModal').classList.remove('hidden');
+    }
+
+    function closeAddMenuModal() {
+        document.getElementById('addMenuModal').classList.add('hidden');
+    }
+
+    function openAddPlateModal() {
+        document.getElementById('addPlateModal').classList.remove('hidden');
+    }
+
+    function closeAddPlateModal() {
+        document.getElementById('addPlateModal').classList.add('hidden');
+    }
+
+    
+    window.onclick = function(event) {
+        const menuModal = document.getElementById('addMenuModal');
+        const plateModal = document.getElementById('addPlateModal');
+        
+        if (event.target === menuModal) {
+            closeAddMenuModal();
+        }
+        if (event.target === plateModal) {
+            closeAddPlateModal();
+        }
+    }
+
+
+</script>
+
+<?php 
+include '../connection/conn.php';
+
+if($_SERVER['REQUEST_METHOD'] == 'POST'){
+    $name = $_POST['name'];
+    $description = $_POST['description'];
+    $Image = $_POST['Image'];
+    $price = $_POST['price'];
+}
+
+?>
+<?php } else {
+    header('Location: ../index.php');
+    exit();
+}
+?>
+
 </body>
 </html>

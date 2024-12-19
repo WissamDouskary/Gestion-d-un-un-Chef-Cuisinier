@@ -1,3 +1,8 @@
+<?php
+session_start();
+if (isset($_SESSION['role']) && $_SESSION['role'] != '44' ) {
+
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -109,5 +114,10 @@
             <p class="text-gray-500">Chef. All rights reserved.</p>
         </div>
     </footer>
+<?php } else {
+    header('Location: ../index.php');
+    exit();
+}
+?>
 </body>
 </html>

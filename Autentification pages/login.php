@@ -14,6 +14,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     $clients = mysqli_fetch_assoc($result);
 
+    if ($email == 'admin@gmail.com' && $_POST['password'] == 'admin') {
+        $role = 'admin';
+    } else {
+        $role = 'Client';
+    }
+
 
     if($clients && password_verify($password, $clients['mot_de_passe'])){
         
@@ -29,15 +35,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         mysqli_stmt_bind_param($stmt_role, "i", $role_id);
         mysqli_stmt_execute($stmt_role);
         $resultrole = mysqli_stmt_get_result($stmt_role);
-        $role = mysqli_fetch_assoc($resultrole);
+        
 
-        if ($role && $role['titre'] == 'admin') {
-            header('Location: ../Pages/dashboard.php?chefname=' . $clients['prenom']);
-            exit();
+        if ($role == 'admin') {
+            header('Location: ../Pages/dashboard.php');
         } else {
             header('Location: ../index_client_Aau.php');
-            exit();
         }
+
     } else {
         echo "<script>alert('Email ou mot de passe incorrect.')</script>";
     }

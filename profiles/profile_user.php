@@ -1,7 +1,8 @@
 <?php
 session_start();
-?>
+if (isset($_SESSION['role']) && $_SESSION['role'] != '44' ) {
 
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -99,5 +100,11 @@ session_start();
             </div>
         </div>
     </div>
+
+<?php } else {
+    header('Location: ../index.php');
+    exit();
+}
+?>
 </body>
 </html>
