@@ -1,12 +1,14 @@
-CREATE DATABASE cuisinie;
+CREATE DATABASE IF NOT EXISTS cuisinie;
 USE cuisinie;
 
-CREATE TABLE Role (
+
+CREATE TABLE IF NOT EXISTS Role (
     role_id INT PRIMARY KEY AUTO_INCREMENT,
     titre VARCHAR(150) NOT NULL
 );
 
-CREATE TABLE plats (
+
+CREATE TABLE IF NOT EXISTS plats (
     plate_id INT PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(50),
     description TEXT,
@@ -14,9 +16,10 @@ CREATE TABLE plats (
     price FLOAT
 );
 
-CREATE TABLE Menus (
+
+CREATE TABLE IF NOT EXISTS Menus (
     menu_id INT PRIMARY KEY AUTO_INCREMENT,
-    plate_id INT NOT NULL,
+    plate_id INT NOT NULL, 
     name VARCHAR(100) NOT NULL,
     description TEXT,
     menu_image_url VARCHAR(255),
@@ -26,7 +29,8 @@ CREATE TABLE Menus (
     FOREIGN KEY (plate_id) REFERENCES plats(plate_id) ON DELETE CASCADE
 );
 
-CREATE TABLE Clients (
+
+CREATE TABLE IF NOT EXISTS Clients (
     client_id INT PRIMARY KEY AUTO_INCREMENT,
     role_id INT NOT NULL,
     nom VARCHAR(50),
@@ -36,7 +40,7 @@ CREATE TABLE Clients (
     FOREIGN KEY (role_id) REFERENCES Role(role_id) ON DELETE CASCADE
 );
 
-CREATE TABLE reservation (
+CREATE TABLE IF NOT EXISTS reservation (
     reservation_id INT PRIMARY KEY AUTO_INCREMENT,
     client_id INT NOT NULL,
     menu_id INT NOT NULL,
@@ -44,4 +48,13 @@ CREATE TABLE reservation (
     status ENUM('en_attente', 'acceptee', 'refusee') DEFAULT 'en_attente',
     FOREIGN KEY (client_id) REFERENCES Clients(client_id) ON DELETE CASCADE,
     FOREIGN KEY (menu_id) REFERENCES Menus(menu_id) ON DELETE CASCADE
+);
+
+
+CREATE TABLE IF NOT EXISTS menu_plats (
+    menu_id INT NOT NULL,
+    plate_id INT NOT NULL,
+    PRIMARY KEY (menu_id, plate_id),
+    FOREIGN KEY (menu_id) REFERENCES Menus(menu_id) ON DELETE CASCADE,
+    FOREIGN KEY (plate_id) REFERENCES plats(plate_id) ON DELETE CASCADE
 );
