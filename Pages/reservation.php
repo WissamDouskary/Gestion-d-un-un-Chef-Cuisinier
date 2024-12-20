@@ -143,6 +143,6 @@ session_start();
             <p class="text-gray-500">Chef © All rights reserved.</p>
         </div>
     </footer>
-    
+
 </body>
 </html>
