@@ -15,12 +15,6 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             alert('Please enter a valid email address');
             return;
-        }
-
-        if (!regex.password.test(password)) {
-            e.preventDefault();
-            alert('Password must be at least 8 characters long');
-            return;
-        }
+        } 
     });
 });
