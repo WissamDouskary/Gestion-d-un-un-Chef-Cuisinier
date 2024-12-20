@@ -168,33 +168,51 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == '44') {
                 <table class="w-full text-sm text-left">
                     <thead class="bg-gray-100 text-gray-600 uppercase">
                         <tr>
-                            <th class="px-4 py-3 rounded-tl-lg">Client</th>
+                            <th class="px-4 py-3 rounded-tl-lg">Client Name</th>
+                            <th class="px-4 py-3">Reserved Menu</th>
                             <th class="px-4 py-3">Date</th>
                             <th class="px-4 py-3">Hour</th>
-                            <th class="px-4 py-3">Persone</th>
                             <th class="px-4 py-3 rounded-tr-lg">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php 
+                    <?php 
+include '../connection/conn.php'; 
+
+
+$res_sql = "SELECT r.*, c.nom AS clients_name, m.name AS menu_name, c.prenom AS last_name 
+			FROM reservation r
+            LEFT JOIN clients c ON c.client_id = r.client_id
+            LEFT JOIN menus m ON m.menu_id = r.menu_id;";
+
+$res_result = mysqli_query($conn, $res_sql);
+
+if($res_result){
+    while($row = mysqli_fetch_assoc($res_result)){
+        echo '<tr class="border-b hover:bg-gray-50 transition">
+            <td class="px-4 py-4">'. htmlspecialchars($row['last_name']). " " . $row['clients_name'] .'</td>
+            <td class="px-4 py-4">'. htmlspecialchars($row['menu_name']) .'</td>
+            <td class="px-4 py-4">'. date('Y-m-d', strtotime($row['date_reservation'])) .'</td>
+            <td class="px-4 py-4">'. date('H:i', strtotime($row['date_reservation'])) .'</td>
+            <td class="px-4 py-4">
+                <div class="flex space-x-2">
+                <a href="">
+                    <button class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition">
+                        Accept
+                    </button>
+                </a>
+                <a href="">
+                    <button class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition">
+                        Refuse
+                    </button>
+                </a>
+                </div>
+            </td>
+        </tr>';
+    }
+}
+?>
                         
-                        ?>
-                        <tr class="border-b hover:bg-gray-50 transition">
-                            <td class="px-4 py-4">Omar Bourra</td>
-                            <td class="px-4 py-4">15 chi chhar 2024</td>
-                            <td class="px-4 py-4">19:00</td>
-                            <td class="px-4 py-4">2</td>
-                            <td class="px-4 py-4">
-                                <div class="flex space-x-2">
-                                    <button class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition">
-                                        Accept
-                                    </button>
-                                    <button class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition">
-                                        Refuse
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
