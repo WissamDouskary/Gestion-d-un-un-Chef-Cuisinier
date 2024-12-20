@@ -144,7 +144,7 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == '44') {
 
                                 if($result){
                                     while($row = mysqli_fetch_assoc($result)){
-                                        echo $row['total_clients'];
+                                        echo $row['total_clients']-1;
                                     }
                                 }
                                 
@@ -364,7 +364,6 @@ include '../connection/conn.php';
 if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['plate_submit'])){
     $name = $_POST['plate_name'];
     $description = $_POST['plate_description'];
-    
     $price = $_POST['plate_price'];
 
         
@@ -373,17 +372,18 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['plate_submit'])){
         $uploadDir = "../uploads/";
         $newPathImage = $uploadDir . basename($_FILES["plate_image"]["name"]);
         $extension = pathinfo($newPathImage, PATHINFO_EXTENSION);
-        $allowedExtensions = array('png', 'jpg', 'jpeg', 'gif', 'svg');
-
+        $allowedExtensions = array('png', 'jpg', 'jpeg', 'gif', 'svg', 'webp');
+        
         
         if (in_array(strtolower($extension), $allowedExtensions)) {
             move_uploaded_file($_FILES["plate_image"]["tmp_name"], $newPathImage);
-        
+            
             if (empty($name) || empty($description) || empty($newPathImage) || $price <= 0) {
                 echo "<script>alert('Invalid input.');</script>";
+                
                 return;
             }
-    
+            
             $sql = "INSERT INTO plats (title, description, plats_image, price)
             VALUES (?, ?, ?, ?)";
             $stmt = mysqli_prepare($conn, $sql);
@@ -431,7 +431,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['Menu_submit'])) {
             mysqli_stmt_bind_param($stmt, "sssds", $menuName, $menuDescription, $newPathImage, $menuPrice, $dateAdded);
             if(mysqli_stmt_execute($stmt)){
                 echo "<script>
-                alert('plate created successfully!');
+                alert('Menu created successfully!');
                  window.location.href = '../Pages/dashboard.php';
                 </script>";
             }
