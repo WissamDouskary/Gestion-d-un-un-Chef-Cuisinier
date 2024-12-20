@@ -12,6 +12,7 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == '44') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DashBoard - admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen font-inter text-gray-800">
@@ -176,42 +177,42 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == '44') {
                         </tr>
                     </thead>
                     <tbody>
-                    <?php 
-include '../connection/conn.php'; 
+                <?php 
+                    include '../connection/conn.php'; 
 
 
-$res_sql = "SELECT r.*, c.nom AS clients_name, m.name AS menu_name, c.prenom AS last_name 
-			FROM reservation r
-            LEFT JOIN clients c ON c.client_id = r.client_id
-            LEFT JOIN menus m ON m.menu_id = r.menu_id;";
+                    $res_sql = "SELECT r.*, c.nom AS clients_name, m.name AS menu_name, c.prenom AS last_name 
+                    			FROM reservation r
+                                LEFT JOIN clients c ON c.client_id = r.client_id
+                                LEFT JOIN menus m ON m.menu_id = r.menu_id;";
 
-$res_result = mysqli_query($conn, $res_sql);
+                    $res_result = mysqli_query($conn, $res_sql);
 
-if($res_result){
-    while($row = mysqli_fetch_assoc($res_result)){
-        echo '<tr class="border-b hover:bg-gray-50 transition">
-            <td class="px-4 py-4">'. htmlspecialchars($row['last_name']). " " . $row['clients_name'] .'</td>
-            <td class="px-4 py-4">'. htmlspecialchars($row['menu_name']) .'</td>
-            <td class="px-4 py-4">'. date('Y-m-d', strtotime($row['date_reservation'])) .'</td>
-            <td class="px-4 py-4">'. date('H:i', strtotime($row['date_reservation'])) .'</td>
-            <td class="px-4 py-4">
-                <div class="flex space-x-2">
-                <a href="">
-                    <button class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition">
-                        Accept
-                    </button>
-                </a>
-                <a href="">
-                    <button class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition">
-                        Refuse
-                    </button>
-                </a>
-                </div>
-            </td>
-        </tr>';
-    }
-}
-?>
+                    if($res_result){
+                        while($row = mysqli_fetch_assoc($res_result)){
+                            echo '<tr class="border-b hover:bg-gray-50 transition">
+                                <td class="px-4 py-4">'. htmlspecialchars($row['last_name']). " " . $row['clients_name'] .'</td>
+                                <td class="px-4 py-4">'. htmlspecialchars($row['menu_name']) .'</td>
+                                <td class="px-4 py-4">'. date('Y-m-d', strtotime($row['date_reservation'])) .'</td>
+                                <td class="px-4 py-4">'. date('H:i', strtotime($row['date_reservation'])) .'</td>
+                                <td class="px-4 py-4">
+                                    <div class="flex space-x-2">
+                                    <a href="../Pages/admin_accept.php?resId='. $row["reservation_id"] .'">
+                                        <button class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition">
+                                            Accept
+                                        </button>
+                                    </a>
+                                    <a href="../Pages/admin_refuse.php?resId='. $row["reservation_id"] .'">
+                                        <button class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition">
+                                            Refuse
+                                        </button>
+                                    </a>
+                                    </div>
+                                </td>
+                            </tr>';
+                        }
+                    }
+                ?>
                         
                     </tbody>
                 </table>
@@ -468,7 +469,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['Menu_submit'])) {
             
         }
     }else{
-        echo "haskahda";
+        
     }
 }
 ?>

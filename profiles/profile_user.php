@@ -1,10 +1,10 @@
 <?php
 session_start();
 if (isset($_SESSION['role']) && $_SESSION['role'] != '44' ) {
-
+    $clientname = $_SESSION['last_name'];
 ?>
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -95,9 +95,54 @@ if (isset($_SESSION['role']) && $_SESSION['role'] != '44' ) {
 
             
             <div class="bg-white shadow-lg rounded-lg p-6 relative">
-                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Expertise</h2>
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Achievement</h2>
                 <p></p>
             </div>
+        </div>
+
+        <div class="bg-white shadow-lg rounded-lg p-6 md:col-span-2 relative mt-4">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">My Reservations </h2>
+<div class="overflow-x-auto">
+    <table class="min-w-full bg-white border border-gray-300">
+        <thead>
+            <tr class="bg-gray-100">
+                <th class="px-6 py-3 border-b text-left text-sm font-semibold text-gray-600">Menu Name</th>
+                <th class="px-6 py-3 border-b text-left text-sm font-semibold text-gray-600">Time</th>
+                <th class="px-6 py-3 border-b text-left text-sm font-semibold text-gray-600">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            include '../connection/conn.php';
+            $nom = $_SESSION['last_name'];
+            $sql = "SELECT r.*, c.nom AS clients_name, m.name AS menu_name 
+                    FROM reservation r 
+                    LEFT JOIN clients c ON c.client_id = r.client_id 
+                    LEFT JOIN menus m ON m.menu_id = r.menu_id 
+                    WHERE c.nom = '$nom'";
+
+            $result = mysqli_query($conn, $sql);
+            if($result){
+                while($row = mysqli_fetch_assoc($result)){
+                echo '<tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 border-b text-gray-800">'. $row['menu_name'] .'</td>
+                        <td class="px-6 py-4 border-b text-gray-800">'. $row['date_reservation'] .'</td>
+                        <td class="px-6 py-4 border-b">';
+                            if($row['status'] == 'en_attente'){  
+                            echo '<span class="px-2 py-1 text-sm rounded-full bg-yellow-100 text-yellow-800">Pending</span>';
+                            } else if($row['status'] == 'acceptee'){
+                            echo '<span class="px-2 py-1 text-sm rounded-full bg-green-100 text-green-800">Confirmed</span>';
+                            } else if($row['status'] == 'refusee'){
+                            echo '<span class="px-2 py-1 text-sm rounded-full bg-red-100 text-red-800">Refused</span>';
+                            }
+                     echo '</td>';
+                     echo '</tr>';
+                }
+            }
+            ?>
+        </tbody>
+    </table>
+</div>
         </div>
     </div>
 

@@ -21,6 +21,7 @@ if (isset($_SESSION['role']) && $_SESSION['role'] != '44' ) {
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
+    
     <!-- Navigation -->
     <nav class="fixed w-full z-50 bg-white/80 backdrop-blur-md shadow-sm">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
