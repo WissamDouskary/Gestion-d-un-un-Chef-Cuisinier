@@ -182,5 +182,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
         </div>
     </div>
+<script src="../Scripts/signup-validation.js"></script>
 </body>
 </html>
