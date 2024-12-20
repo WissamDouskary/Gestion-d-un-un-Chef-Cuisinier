@@ -52,76 +52,41 @@
         <h2 class="text-3xl mb-8 font-bold text-gray-900">Availlable Menus :</h2>
         <div class="grid md:grid-cols-3 gap-8">
             
-            <div class="bg-white rounded-xl shadow-lg overflow-hidden transform transition hover:scale-105 hover:shadow-2xl">
+        <?php
+        include '../connection/conn.php';
+
+        $sql = "SELECT * FROM menus";
+        $result = mysqli_query($conn, $sql);
+
+        if($result){
+            while($row = mysqli_fetch_assoc($result)){
+                echo '<div class="bg-white rounded-xl shadow-lg overflow-hidden transform transition hover:scale-105 hover:shadow-2xl">
                 <img src="/api/placeholder/400/300" alt="1 photo" class="w-full h-56 object-cover">
                 <div class="p-6">
-                    <h2 class="text-2xl font-bold mb-3 text-gray-900">first one</h2>
+                    <h2 class="text-2xl font-bold mb-3 text-gray-900">'. $row['name'] .'</h2>
                     <p class="text-gray-600 mb-4">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti veritatis alias nam voluptatibus dolore doloribus illum soluta. Quo quasi similique fugiat ipsam? Rerum beatae sunt laudantium, dolore laborum odio dolorem.
+                        '. $row['description'] .'
                     </p>
                     <div class="flex justify-between items-center">
-                        <span class="text-3xl font-bold text-gray-900">89€</span>
+                        <span class="text-3xl font-bold text-gray-900">'. $row['price'] .'$</span>
                         <button class="bg-gray-900 text-white px-5 py-2 rounded-full hover:bg-gray-700 transition">
                             Reserve
                         </button>
                     </div>
                     <div class="mt-4 flex items-center text-gray-500">
                         <i class="fas fa-utensils mr-2"></i>
-                        <span>5 Plats</span>
+                        
                         <span class="mx-2">•</span>
                         <i class="far fa-clock mr-2"></i>
-                        <span>2h30</span>
+                        <span>'. $row['date_added'] .'</span>
                     </div>
                 </div>
-            </div>
-
-           
-            <div class="bg-white rounded-xl shadow-lg overflow-hidden transform transition hover:scale-105 hover:shadow-2xl">
-                <img src="/api/placeholder/400/300" alt="2 photo" class="w-full h-56 object-cover">
-                <div class="p-6">
-                    <h2 class="text-2xl font-bold mb-3 text-gray-900">tanya</h2>
-                    <p class="text-gray-600 mb-4">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex accusamus ullam magnam illo similique iste nostrum cupiditate consequuntur sit veritatis voluptatem totam, a expedita provident non quam voluptas facere aliquam!
-                    </p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-3xl font-bold text-gray-900">105€</span>
-                        <button class="bg-gray-900 text-white px-5 py-2 rounded-full hover:bg-gray-700 transition">
-                            Reserve
-                        </button>
-                    </div>
-                    <div class="mt-4 flex items-center text-gray-500">
-                        <i class="fas fa-utensils mr-2"></i>
-                        <span>6 Plats</span>
-                        <span class="mx-2">•</span>
-                        <i class="far fa-clock mr-2"></i>
-                        <span>3h00</span>
-                    </div>
-                </div>
-            </div>
-
-            
-            <div class="bg-white rounded-xl shadow-lg overflow-hidden transform transition hover:scale-105 hover:shadow-2xl">
-                <img src="/api/placeholder/400/300" alt="3 photo" class="w-full h-56 object-cover">
-                <div class="p-6">
-                    <h2 class="text-2xl font-bold mb-3 text-gray-900">hadik</h2>
-                    <p class="text-gray-600 mb-4">
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit libero minima dicta eum nesciunt eos tempora voluptatibus molestias et, sunt vitae vero qui quae dolor quibusdam porro in aut fugit!
-                    </p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-3xl font-bold text-gray-900">129€</span>
-                        <button class="bg-gray-900 text-white px-5 py-2 rounded-full hover:bg-gray-700 transition">
-                            Reserve
-                        </button>
-                    </div>
-                    <div class="mt-4 flex items-center text-gray-500">
-                        <i class="fas fa-utensils mr-2"></i>
-                        <span>7 Plats</span>
-                        <span class="mx-2">•</span>
-                        <i class="far fa-clock mr-2"></i>
-                        <span>3h30</span>
-                    </div>
-                </div>
-            </div>
+            </div>';
+            }
+        }
+        
+        
+        ?> 
         </div>
     </section>
 
