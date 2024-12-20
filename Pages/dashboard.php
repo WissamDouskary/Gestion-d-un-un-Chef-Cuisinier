@@ -1,6 +1,5 @@
 <?php
 
-use LDAP\Result;
 
 session_start();
 if (isset($_SESSION['role']) && $_SESSION['role'] == '44') {
@@ -177,6 +176,9 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == '44') {
                         </tr>
                     </thead>
                     <tbody>
+                        <?php 
+                        
+                        ?>
                         <tr class="border-b hover:bg-gray-50 transition">
                             <td class="px-4 py-4">Omar Bourra</td>
                             <td class="px-4 py-4">15 chi chhar 2024</td>
@@ -213,7 +215,7 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == '44') {
                 </svg>
             </button>
         </div>
-        <form id="menuForm" method="POST" class="space-y-4">
+        <form id="menuForm" enctype="multipart/form-data" method="POST" class="space-y-4">
             <div>
                 <label class="block text-gray-700 text-sm font-medium mb-2">Menu Name</label>
                 <input type="text" name="menu_name" required 
@@ -225,8 +227,8 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == '44') {
                     class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
             </div>
             <div>
-                <label class="block text-gray-700 text-sm font-medium mb-2">Image URL</label>
-                <input type="text" name="menu_Image" required 
+                <label class="block text-gray-700 text-sm font-medium mb-2">Image</label>
+                <input type="file" name="menu_Image"  
                     class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
             </div>
             <div>
@@ -285,7 +287,7 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == '44') {
                 </svg>
             </button>
         </div>
-        <form id="plateForm" method="POST" action="" class="space-y-4">
+        <form id="plateForm" enctype="multipart/form-data" method="POST" action="" class="space-y-4">
             <div>
                 <label class="block text-gray-700 text-sm font-medium mb-2">Plate Name</label>
                 <input type="text" name="plate_name" required 
@@ -302,8 +304,8 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == '44') {
                     class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
             </div>
             <div>
-                <label class="block text-gray-700 text-sm font-medium mb-2">Image URL</label>
-                <input type="text" name="plate_image" required 
+                <label class="block text-gray-700 text-sm font-medium mb-2">Image</label>
+                <input type="file" name="plate_image" required 
                     class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
             </div>
             <div class="flex space-x-4 pt-4">
@@ -357,28 +359,45 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == '44') {
 <?php 
 include '../connection/conn.php';
 
+
+// for plates
 if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['plate_submit'])){
     $name = $_POST['plate_name'];
     $description = $_POST['plate_description'];
-    $Image = $_POST['plate_image'];
+    
     $price = $_POST['plate_price'];
 
-    if (empty($name) || empty($description) || empty($Image) || $price <= 0) {
-        echo "<script>alert('Invalid input.');</script>";
-        return;
-    }
-
-    $sql = "INSERT INTO plats (title, description, plats_image, price)
-            VALUES (?, ?, ?, ?)";
-    $stmt = mysqli_prepare($conn, $sql);
-    mysqli_stmt_bind_param($stmt, "sssd" , $name, $description, $Image, $price);
-    if(mysqli_stmt_execute($stmt)){
-        echo "<script>
-        alert('plate created successfully!');
-        window.location.href = '../Pages/dashboard.php';
-        </script>";
-    }
         
+    if (isset($_FILES["plate_image"]) && !empty($_FILES["plate_image"]["name"])) {
+        
+        $uploadDir = "../uploads/";
+        $newPathImage = $uploadDir . basename($_FILES["plate_image"]["name"]);
+        $extension = pathinfo($newPathImage, PATHINFO_EXTENSION);
+        $allowedExtensions = array('png', 'jpg', 'jpeg', 'gif', 'svg');
+
+        
+        if (in_array(strtolower($extension), $allowedExtensions)) {
+            move_uploaded_file($_FILES["plate_image"]["tmp_name"], $newPathImage);
+        
+            if (empty($name) || empty($description) || empty($newPathImage) || $price <= 0) {
+                echo "<script>alert('Invalid input.');</script>";
+                return;
+            }
+    
+            $sql = "INSERT INTO plats (title, description, plats_image, price)
+            VALUES (?, ?, ?, ?)";
+            $stmt = mysqli_prepare($conn, $sql);
+            mysqli_stmt_bind_param($stmt, "sssd" , $name, $description, $newPathImage, $price);
+            if(mysqli_stmt_execute($stmt)){
+                echo "<script>
+                alert('plate created successfully!');
+                 window.location.href = '../Pages/dashboard.php';
+                </script>";
+            }
+    
+        
+}
+}
 }
 
 ?>
@@ -386,42 +405,53 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['plate_submit'])){
 <?php
 include '../connection/conn.php';
 
+// For Menu
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['Menu_submit'])) {
     
     $menuName = trim($_POST['menu_name']);
     $menuDescription = trim($_POST['menu_description']);
-    $menuImage = trim($_POST['menu_Image']);
     $menuPrice = floatval($_POST['menu_price']);
     $dateAdded = $_POST['date_added'];
     $selectedPlates = $_POST['plates'] ?? [];
-
     
-    if (empty($menuName) || empty($menuDescription) || empty($menuImage) || $menuPrice <= 0 || count($selectedPlates) !== 3) {
-        echo "<script>alert('Invalid input.');</script>";
-        return;
+    if (isset($_FILES["menu_Image"]) && !empty($_FILES["menu_Image"]["name"])) {
+        
+        $uploadDir = "../uploads/";
+        $newPathImage = $uploadDir . basename($_FILES["menu_Image"]["name"]);
+        $extension = pathinfo($newPathImage, PATHINFO_EXTENSION);
+        $allowedExtensions = array('png', 'jpg', 'jpeg', 'gif', 'svg', 'webp');
+
+        
+        if (in_array(strtolower($extension), $allowedExtensions)) {
+            move_uploaded_file($_FILES["menu_Image"]["tmp_name"], $newPathImage);
+
+
+            $sql = "INSERT INTO Menus (name, description, menu_image_url, price, date_added) VALUES (?, ?, ?, ?, ?)";
+            $stmt = mysqli_prepare($conn, $sql);
+            mysqli_stmt_bind_param($stmt, "sssds", $menuName, $menuDescription, $newPathImage, $menuPrice, $dateAdded);
+            if(mysqli_stmt_execute($stmt)){
+                echo "<script>
+                alert('plate created successfully!');
+                 window.location.href = '../Pages/dashboard.php';
+                </script>";
+            }
+            
+        
+            $menuId = mysqli_insert_id($conn);
+
+            $insertPlatesSql = "INSERT INTO menu_plats (menu_id, plate_id) VALUES (?, ?)";
+            $plateStmt = mysqli_prepare($conn, $insertPlatesSql);
+            foreach ($selectedPlates as $plateId) {
+                mysqli_stmt_bind_param($plateStmt, "ii", $menuId, $plateId);
+                mysqli_stmt_execute($plateStmt);
+            }
+        
+            
+            
+        }
+    }else{
+        echo "haskahda";
     }
-
-   
-    $sql = "INSERT INTO Menus (name, description, menu_image_url, price, date_added) VALUES (?, ?, ?, ?, ?)";
-    $stmt = mysqli_prepare($conn, $sql);
-    mysqli_stmt_bind_param($stmt, "sssds", $menuName, $menuDescription, $menuImage, $menuPrice, $dateAdded);
-    mysqli_stmt_execute($stmt);
-
-    $menuId = mysqli_insert_id($conn);
-
-    
-    $insertPlatesSql = "INSERT INTO menu_plats (menu_id, plate_id) VALUES (?, ?)";
-    $plateStmt = mysqli_prepare($conn, $insertPlatesSql);
-    foreach ($selectedPlates as $plateId) {
-        mysqli_stmt_bind_param($plateStmt, "ii", $menuId, $plateId);
-        mysqli_stmt_execute($plateStmt);
-    }
-
-    
-    echo "<script>
-        alert('Menu created successfully!');
-        window.location.href = '../Pages/dashboard.php';
-    </script>";
 }
 ?>
 
@@ -431,6 +461,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['Menu_submit'])) {
     exit();
 }
 ?>
+
+
 
 </body>
 </html>
