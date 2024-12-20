@@ -31,11 +31,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     mysqli_stmt_execute($stmt);
 
     
-    $_SESSION['user_id'] = mysqli_insert_id($conn);
-    $_SESSION['first_name'] = $firstName;
-    $_SESSION['last_name'] = $lastName;
-    $_SESSION['role'] = $role;
+    $sql_select = "SELECT * FROM clients WHERE email = ?";
+    $select_stmt = mysqli_prepare($conn, $sql_select);
+    mysqli_stmt_bind_param($select_stmt, "s", $email);
+    mysqli_stmt_execute($select_stmt);
+    $result = mysqli_stmt_get_result($select_stmt);
 
+    while($client = mysqli_fetch_assoc($result)){
+        $_SESSION['client_id'] = $clients['client_id'];
+        $_SESSION['last_name'] = $clients['nom'];
+        $_SESSION['first_name'] = $clients['prenom'];
+        $_SESSION['email'] = $clients['email'];
+        $_SESSION['role'] = $role;
+    }
+    
+    
     
     if ($role == 'admin') {
         header('Location: ../Pages/dashboard.php');
