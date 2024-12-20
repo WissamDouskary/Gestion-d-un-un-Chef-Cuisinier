@@ -1,4 +1,7 @@
 <?php
+
+use LDAP\Result;
+
 session_start();
 if (isset($_SESSION['role']) && $_SESSION['role'] == '44') {
 
@@ -47,19 +50,63 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == '44') {
                 <div class="space-y-3">
                     <div class="flex justify-between items-center bg-blue-50 p-3 rounded-lg">
                         <span class="text-gray-600">Total Reservations</span>
-                        <span class="bg-blue-200 text-blue-800 px-3 py-1 rounded-full font-bold">3</span>
+                        <span class="bg-blue-200 text-blue-800 px-3 py-1 rounded-full font-bold">
+                        <?php 
+                        include '../connection/conn.php';
+                        $total_sql = "SELECT COUNT(*) AS res_count FROM reservation";
+                        $total_result = mysqli_query($conn, $total_sql);
+                        if($total_result){
+                            while($row = mysqli_fetch_assoc($total_result)){
+                                echo $row['res_count'];
+                            }
+                        }
+                        ?>
+                        </span>
                     </div>
                     <div class="flex justify-between items-center bg-green-50 p-3 rounded-lg">
                         <span class="text-gray-600">Reservations Accepted</span>
-                        <span class="bg-green-200 text-green-800 px-3 py-1 rounded-full font-bold">3</span>
+                        <span class="bg-green-200 text-green-800 px-3 py-1 rounded-full font-bold">
+                        <?php 
+                        include '../connection/conn.php';
+                        $total_acc = "SELECT COUNT(*) AS res_count FROM reservation WHERE reservation.status = 'acceptee'";
+                        $total_result_acc = mysqli_query($conn, $total_acc);
+                        if($total_result){
+                            while($row = mysqli_fetch_assoc($total_result_acc)){
+                                echo $row['res_count'];
+                            }
+                        }
+                        ?>
+                        </span>
                     </div>
                     <div class="flex justify-between items-center bg-red-50 p-3 rounded-lg">
                         <span class="text-gray-600">Reservations Refused</span>
-                        <span class="bg-red-200 text-red-800 px-3 py-1 rounded-full font-bold">3</span>
+                        <span class="bg-red-200 text-red-800 px-3 py-1 rounded-full font-bold">
+                        <?php 
+                        include '../connection/conn.php';
+                        $total_ref = "SELECT COUNT(*) AS res_count FROM reservation WHERE reservation.status = 'refusee'";
+                        $total_result_ref = mysqli_query($conn, $total_ref);
+                        if($total_result){
+                            while($row = mysqli_fetch_assoc($total_result_ref)){
+                                echo $row['res_count'];
+                            }
+                        }
+                        ?>
+                        </span>
                     </div>
                     <div class="flex justify-between items-center bg-yellow-50 p-3 rounded-lg">
                         <span class="text-gray-600">Pending Reservations</span>
-                        <span class="bg-yellow-200 text-yellow-800 px-3 py-1 rounded-full font-bold">3</span>
+                        <span class="bg-yellow-200 text-yellow-800 px-3 py-1 rounded-full font-bold">
+                        <?php 
+                        include '../connection/conn.php';
+                        $total_pen = "SELECT COUNT(*) AS res_count FROM reservation WHERE reservation.status = 'en_attente'";
+                        $total_result_pen = mysqli_query($conn, $total_pen);
+                        if($total_result){
+                            while($row = mysqli_fetch_assoc($total_result_pen)){
+                                echo $row['res_count'];
+                            }
+                        }
+                        ?>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -88,7 +135,24 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == '44') {
                             </svg>
                         </div>
                         <div>
-                            <p class="text-3xl font-bold text-gray-800">256</p>
+                            <p class="text-3xl font-bold text-gray-800">
+                            <?php 
+                                include '../connection/conn.php';
+
+                                $sql = "SELECT COUNT(*) AS total_clients FROM clients";
+
+                                $result = mysqli_query($conn, $sql);
+
+                                if($result){
+                                    while($row = mysqli_fetch_assoc($result)){
+                                        echo $row['total_clients'];
+                                    }
+                                }
+                                
+
+                                
+                            ?>
+                            </p>
                             <p class="text-sm text-gray-600">Total registered</p>
                         </div>
                     </div>
@@ -191,11 +255,6 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == '44') {
                     }
                     ?>
                 </div>
-            </div>
-            <div>
-                <label class="block text-gray-700 text-sm font-medium mb-2">Number of Plates</label>
-                <input type="number" name="Nombre_du_plates" required 
-                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
             </div>
             <div>
                 <label class="block text-gray-700 text-sm font-medium mb-2">Date Added</label>
