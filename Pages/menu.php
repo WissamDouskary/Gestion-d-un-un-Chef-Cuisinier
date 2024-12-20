@@ -62,7 +62,7 @@
         if($result){
             while($row = mysqli_fetch_assoc($result)){
                 echo '<div class="bg-white rounded-xl shadow-lg overflow-hidden transform transition hover:scale-105 hover:shadow-2xl">
-                <img src="/api/placeholder/400/300" alt="1 photo" class="w-full h-56 object-cover">
+                <img src="'. $row['menu_image_url'] . '" alt="1 photo" class="w-full h-56 object-cover">
                 <div class="p-6">
                     <h2 class="text-2xl font-bold mb-3 text-gray-900">'. $row['name'] .'</h2>
                     <p class="text-gray-600 mb-4">

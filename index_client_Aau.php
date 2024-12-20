@@ -45,7 +45,7 @@ if (isset($_SESSION['role']) && $_SESSION['role'] != '44' ) {
             <h1 class="text-5xl font-bold mb-6 animate-fade-in">Unique Experience</h1>
             <p class="text-xl mb-10 max-w-2xl mx-auto">Discover a personalized gastronomic adventure, prepared with passion and creativity by a starred chef.</p>
             <div class="space-x-4">
-                <a href="#" class="bg-white text-gray-900 px-6 py-3 rounded-full hover:bg-gray-100 transition">Our Menus</a>
+                <a href="../Gestion-d-un-un-Chef-Cuisinier/Pages/menu_client_Aau.php" class="bg-white text-gray-900 px-6 py-3 rounded-full hover:bg-gray-100 transition">Our Menus</a>
                 <a href="#contact" class="border-2 border-white text-white px-6 py-3 rounded-full hover:bg-white hover:text-gray-900 transition">Contact us</a>
             </div>
         </div>
